@@ -1,0 +1,54 @@
+name: test-action
+on:
+  push:
+    branches:
+      - master
+jobs:
+  check-time-logic:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+
+      - name: test1
+        id: time1
+        uses: seatcode/git-cli-actions-seatcode@v1.0
+
+
+      - name: test1-output
+        env:
+          TIME: "${{ steps.time1.outputs.time }}"
+        run: |
+          echo $TIME
+      - name: test2
+        id: time2
+        uses: seatcode/git-cli-actions-seatcode@v1.0
+        with:
+          timeZone: 8
+          format: 'YYYY-MM-DD_HH:mm:ss'
+
+      - name: test2-output
+        env:
+          TIME: "${{ steps.time2.outputs.time }}"
+        run: |
+          echo $TIME
+          
+  check-string-changes-logic:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+
+      - name: test1
+        id: cadena
+        uses: seatcode/git-cli-actions-seatcode@v1.0
+        with:
+          string: "A SIMPLE TEST TO lowercase"
+
+      - name: test1-output
+        env:
+          CADENA: "${{ steps.cadena.outputs.lowercase }}"
+        run: |
+          echo $CADENA  

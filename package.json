@@ -1,0 +1,24 @@
+{
+  "name": "git-cli-actions-seatcode",
+  "version": "1.0.0",
+  "description": "Github actions to manage simple commands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seatcode/git-cli-actions-seatcode.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/seatcode/git-cli-actions-seatcode/issues"
+  },
+  "homepage": "https://github.com/seatcode/git-cli-actions-seatcode#readme",
+  "dependencies": {
+    "@actions/core": "^1.10.0",
+    "@actions/github": "^5.1.1"
+  }
+}
