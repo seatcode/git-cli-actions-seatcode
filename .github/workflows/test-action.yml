@@ -4,7 +4,7 @@ on:
     branches:
       - master
 jobs:
-  check-time-logic:
+  check-time:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,7 +34,7 @@ jobs:
         run: |
           echo $TIME
           
-  check-string-changes-logic:
+  check-string-changes:
     runs-on: ubuntu-latest
 
     steps:
