@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   check-time-logic:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Git Source
@@ -35,7 +35,7 @@ jobs:
           echo $TIME
           
   check-string-changes-logic:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Git Source
