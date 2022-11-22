@@ -13,7 +13,7 @@ jobs:
 
       - name: test1
         id: time1
-        uses: seatcode/git-cli-actions-seatcode@v1.0
+        uses: ./
 
 
       - name: test1-output
@@ -23,7 +23,7 @@ jobs:
           echo $TIME
       - name: test2
         id: time2
-        uses: seatcode/git-cli-actions-seatcode@v1.0
+        uses: ./
         with:
           timeZone: 8
           format: 'YYYY-MM-DD_HH:mm:ss'
@@ -43,7 +43,7 @@ jobs:
 
       - name: test1
         id: cadena
-        uses: seatcode/git-cli-actions-seatcode@v1.0
+        uses: ./
         with:
           string: "A SIMPLE TEST TO lowercase"
 
