@@ -14,20 +14,18 @@ jobs:
       - name: test1
         id: time1
         uses: ./
-
-
       - name: test1-output
         env:
           TIME: "${{ steps.time1.outputs.time }}"
         run: |
           echo $TIME
+
       - name: test2
         id: time2
         uses: ./
         with:
           timeZone: 8
           format: 'YYYY-MM-DD_HH:mm:ss'
-
       - name: test2-output
         env:
           TIME: "${{ steps.time2.outputs.time }}"

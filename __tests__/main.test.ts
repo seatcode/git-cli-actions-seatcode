@@ -3,10 +3,14 @@ import * as cp from 'child_process'
 import * as path from 'path'
 import {expect, test} from '@jest/globals'
 import {time} from '../src/action/time'
+import {labels} from '../src/action/labels'
 
-test('wait 500 ms', async () => {
+test('check - time action', async () => {
   await time()
-  console.log('demo')
+})
+
+test('check - time strings', async () => {
+  await labels()
 })
 
 // shows how the runner will run a javascript action with env / stdout protocol
