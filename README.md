@@ -1,95 +1,77 @@
-# aem-git-actions-time
-AEM Github actions to manage time into the workflows
+# SEAT:CODE - utilities git-actions
+Github project to execute utilities into the workflows, this project contains multiples functions to manage labels, 
+timeStamp, branch review as naming convention, etc.
+
+- Get Time Action
+  - Get the time in the specified time zone [View code](https://github.com/seatcode/git-cli-actions-seatcode/blob/master/src/action/time.ts)
+- Manage labels
+  - useful to obtain lowerCase, upperCase or capitalize [View code](https://github.com/seatcode/git-cli-actions-seatcode/blob/master/src/action/labels.ts)
+
+    
+
+### Inputs
+
+| Parameter  | Required | Info                                                         |
+| ---------- | -------- | ------------------------------------------------------------ |
+| `timeZone` | `false`  | Time Zone  Default: 0                                        |
+| `format`   | `false`  | Timestamp format string  Default: ''                                    |
+| `string`   | `false`  | Label to transform (lower, upper, capitalize): ''                                    |
 
 
-# Get Time Action
+### Outputs
 
-Get the time in the specified time zone
+| Parameter   | Info                                                         |
+| ---------- | ------------------------------------------------------------ |
+| `time`   | Time in the specified time zone|
+| `lowercase`   | Lowercase (`XyZzY` -> `xyzzy`)|
+| `uppercase`   | Uppercase (`XyZzY` -> `XYZZY`)|
+| `capitalized`   | Capitalized (`Xyzzy` -> `Xyzzy`)|
 
-## Example usage
 
+### Examples usage
 ```yaml
-      - name: Get Time
+name: my-workflow
+on:
+  push:
+    branches:
+      - master
+jobs:
+  check-time:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+        
+      - name: test
         id: time
-        uses: nanzm/get-time-action@v1.1
+        uses: ./
         with:
           timeZone: 8
-          format: 'YYYY-MM-DD-HH-mm-ss'
-      - name: Usage
+          format: 'YYYY-MM-DD_HH:mm:ss'
+      - name: test-output
         env:
           TIME: "${{ steps.time.outputs.time }}"
         run: |
           echo $TIME
-```
 
-## Inputs
-
-| Parameter  | Required | Info                                                         |
-| ---------- | -------- | ------------------------------------------------------------ |
-| `timeZone` | `false`  | time Zone  Default: 0                                        |
-| `format`   | `false`  | timestamp format string  Default: ''                                    |
-
-
-## Outputs
-
-| Parameter   | Info                                                         |
-| ---------- | ------------------------------------------------------------ |
-| `time`   | time in the specified time zone|
-
-
-
-# Change String Case GitHub Action
-
-This action accepts any string, and outputs three different versions of that string:
-
-- lowercase (`XyZzY` -> `xyzzy`)
-- uppercase (`XyZzY` -> `XYZZY`)
-- capitalized (`Xyzzy` -> `Xyzzy`)
-
-You can access the outputted strings through the job outputs context. See docs [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjobs_idoutputs), or the Example Usage section below.
-
-## Inputs
-
-### `string`
-
-**Required** The string you want manipulated
-
-## Outputs
-
-### `lowercase`
-
-`inputStr.toLowerCase()`
-
-Example: `XyZzY` -> `xyzzy`
-
-### `uppercase`
-
-`inputStr.toUpperCase()`
-
-Example: `XyZzY` -> `XYZZY`
-
-### `capitalized`
-
-`inputStr.charAt(0).toUpperCase() + inputStr.slice(1).toLowerCase()`
-
-Example: `XyZzY` -> `Xyzzy`
-
-## Example Usage
-
-```yaml
-name: SomeWorkflow
-on: [push]
-jobs:
-  build:
-    name: Build
+  check-string-changes:
     runs-on: ubuntu-latest
+
     steps:
-      - id: string
-        uses: seatcode/git-cli-actions-seatcode@v1.0
+      - name: Checkout Git Source
+        uses: actions/checkout@v3
+
+      - name: test
+        id: cadena
+        uses: ./
         with:
-          string: XyZzY
-      - id: step2
-        run: echo ${{ steps.string.outputs.lowercase }}
+          string: "A SIMPLE TEST TO lowercase"
+      - name: test-output
+        env:
+          CADENA: "${{ steps.cadena.outputs.lowercase }}"
+        run: |
+          echo $CADENA  
 ```
 
 
