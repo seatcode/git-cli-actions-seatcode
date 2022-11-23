@@ -27,11 +27,18 @@
   },
   "homepage": "https://github.com/seatcode/git-cli-actions-seatcode#readme",
   "dependencies": {
+    "@actions/artifact": "^1.1.0",
     "@actions/core": "^1.10.0",
     "@actions/github": "^5.1.1",
+    "@lhci/cli": "^0.9.0",
+    "@lhci/utils": "^0.9.0",
+    "is-windows": "^1.0.2",
+    "lodash": "^4.17.21",
     "dayjs": "^1.8.23"
   },
   "devDependencies": {
+    "@types/is-windows": "^1.0.0",
+    "@types/lodash": "^4.14.188",
     "@types/node": "^18.11.0",
     "@typescript-eslint/parser": "^5.44.0",
     "@vercel/ncc": "^0.34.0",

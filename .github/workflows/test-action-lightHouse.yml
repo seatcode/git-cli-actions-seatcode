@@ -1,0 +1,18 @@
+name: test-action
+on:
+  push:
+    branches:
+      - test-action
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit URLs using Lighthouse
+        uses: ./
+        with:
+          urls: |
+            https://example.com/
+            https://example.com/blog
+          uploadArtifacts: true # save results as an action artifacts
+          temporaryPublicStorage: true # upload lighthouse report to the temporary storage

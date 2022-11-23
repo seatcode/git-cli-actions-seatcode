@@ -4,6 +4,7 @@ import * as path from 'path'
 import {expect, test} from '@jest/globals'
 import {time} from '../src/action/time'
 import {labels} from '../src/action/labels'
+import {lightHouseMain} from '../src/action/lighthouse'
 
 test('check - time action', async () => {
   await time()
