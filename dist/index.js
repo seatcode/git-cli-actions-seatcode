@@ -84,7 +84,7 @@ const core = __nccwpck_require__(186);
 const { join } = __nccwpck_require__(17);
 const childProcess = __nccwpck_require__(81);
 const lhciCliPath = __nccwpck_require__.ab + "cli.js";
-const { getInput, hasAssertConfig } = __nccwpck_require__(893);
+const { getInput, hasAssertConfig } = __nccwpck_require__(938);
 const { uploadArtifacts } = __nccwpck_require__(339);
 const { setAnnotations } = __nccwpck_require__(745);
 const { setOutput } = __nccwpck_require__(236);
@@ -3022,10 +3022,10 @@ exports["default"] = _default;
 
 /***/ }),
 
-/***/ 893:
+/***/ 938:
 /***/ ((module) => {
 
-module.exports = eval("require")("../config");
+module.exports = eval("require")("./config");
 
 
 /***/ }),
