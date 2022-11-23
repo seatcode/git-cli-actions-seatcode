@@ -80,15 +80,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lightHouseMain = void 0;
-__nccwpck_require__(87); // add automatic support for LH Plugins env
+__nccwpck_require__(958); // add automatic support for LH Plugins env
 const core = __nccwpck_require__(186);
 const { join } = __nccwpck_require__(17);
 const childProcess = __nccwpck_require__(81);
 const lhciCliPath = __nccwpck_require__.ab + "cli.js";
 const { getInput, hasAssertConfig } = __nccwpck_require__(893);
-const { uploadArtifacts } = __nccwpck_require__(809);
-const { setAnnotations } = __nccwpck_require__(150);
-const { setOutput } = __nccwpck_require__(348);
+const { uploadArtifacts } = __nccwpck_require__(339);
+const { setAnnotations } = __nccwpck_require__(745);
+const { setOutput } = __nccwpck_require__(236);
 /**
  * Audit urls with Lighthouse CI in 3 stages:
  * 1. collect (using lhci collect or the custom PSI runner, store results as artifacts)
@@ -139,7 +139,9 @@ function lightHouseMain() {
         }
         /******************************* 3. UPLOAD ************************************/
         core.startGroup(`Uploading`);
-        if (input.serverToken || input.temporaryPublicStorage || input.uploadArtifacts) {
+        if (input.serverToken ||
+            input.temporaryPublicStorage ||
+            input.uploadArtifacts) {
             // upload artifacts as soon as collected
             if (input.uploadArtifacts) {
                 yield uploadArtifacts(__nccwpck_require__.ab + ".lighthouseci", input.artifactName);
@@ -166,6 +168,7 @@ function lightHouseMain() {
         }
         // run again for filesystem target
         // @ts-ignore
+        // @ts-ignore
         const uploadStatus = runChildCommand('upload', ['--target=filesystem', `--outputDir=${resultsPath}`]);
         if (uploadStatus !== 0)
             throw new Error(`LHCI 'upload' failed to upload to fylesystem.`);
@@ -185,7 +188,7 @@ exports.lightHouseMain = lightHouseMain;
 function runChildCommand(command, args = []) {
     const combinedArgs = [__nccwpck_require__.ab + "cli.js", command, ...args];
     const { status = -1 } = childProcess.spawnSync(process.argv[0], combinedArgs, {
-        stdio: 'inherit',
+        stdio: 'inherit'
     });
     return status || 0;
 }
@@ -3028,34 +3031,34 @@ module.exports = eval("require")("../config");
 
 /***/ }),
 
-/***/ 150:
+/***/ 745:
 /***/ ((module) => {
 
-module.exports = eval("require")("../utils/annotations");
+module.exports = eval("require")("./utils/annotations");
 
 
 /***/ }),
 
-/***/ 809:
+/***/ 339:
 /***/ ((module) => {
 
-module.exports = eval("require")("../utils/artifacts");
+module.exports = eval("require")("./utils/artifacts");
 
 
 /***/ }),
 
-/***/ 348:
+/***/ 236:
 /***/ ((module) => {
 
-module.exports = eval("require")("../utils/output");
+module.exports = eval("require")("./utils/output");
 
 
 /***/ }),
 
-/***/ 87:
+/***/ 958:
 /***/ ((module) => {
 
-module.exports = eval("require")("../utils/support-lh-plugins");
+module.exports = eval("require")("./utils/support-lh-plugins");
 
 
 /***/ }),

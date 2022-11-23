@@ -1,12 +1,12 @@
-require('../utils/support-lh-plugins') // add automatic support for LH Plugins env
+require('./utils/support-lh-plugins') // add automatic support for LH Plugins env
 const core = require('@actions/core')
 const {join} = require('path')
 const childProcess = require('child_process')
 const lhciCliPath = require.resolve('@lhci/cli/src/cli')
-const { getInput, hasAssertConfig } = require('../config')
-const { uploadArtifacts } = require('../utils/artifacts')
-const { setAnnotations } = require('../utils/annotations')
-const { setOutput } = require('../utils/output')
+const {getInput, hasAssertConfig} = require('../config')
+const {uploadArtifacts} = require('./utils/artifacts')
+const {setAnnotations} = require('./utils/annotations')
+const {setOutput} = require('./utils/output')
 
 /**
  * Audit urls with Lighthouse CI in 3 stages:
@@ -107,10 +107,8 @@ export async function lightHouseMain(): Promise<void> {
 
   // run again for filesystem target
   // @ts-ignore
-  const uploadStatus = runChildCommand('upload', [
-    '--target=filesystem',
-    `--outputDir=${resultsPath}`
-  ])
+  // @ts-ignore
+  const uploadStatus = runChildCommand('upload', ['--target=filesystem', `--outputDir=${resultsPath}`])
   if (uploadStatus !== 0)
     throw new Error(`LHCI 'upload' failed to upload to fylesystem.`)
 
