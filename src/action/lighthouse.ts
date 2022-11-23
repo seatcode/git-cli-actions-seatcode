@@ -1,4 +1,3 @@
-require('./utils/support-lh-plugins') // add automatic support for LH Plugins env
 const core = require('@actions/core')
 const {join} = require('path')
 const childProcess = require('child_process')

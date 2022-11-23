@@ -80,7 +80,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lightHouseMain = void 0;
-__nccwpck_require__(958); // add automatic support for LH Plugins env
 const core = __nccwpck_require__(186);
 const { join } = __nccwpck_require__(17);
 const childProcess = __nccwpck_require__(81);
@@ -3051,14 +3050,6 @@ module.exports = eval("require")("./utils/artifacts");
 /***/ ((module) => {
 
 module.exports = eval("require")("./utils/output");
-
-
-/***/ }),
-
-/***/ 958:
-/***/ ((module) => {
-
-module.exports = eval("require")("./utils/support-lh-plugins");
 
 
 /***/ }),
