@@ -1,11 +1,12 @@
-const core = require('@actions/core')
-const {join} = require('path')
+import * as core from '@actions/core'
+
+import {join} from 'path'
 const childProcess = require('child_process')
 const lhciCliPath = require.resolve('@lhci/cli/src/cli')
-const {getInput, hasAssertConfig} = require('./config')
-const {uploadArtifacts} = require('./utils/artifacts')
-const {setAnnotations} = require('./utils/annotations')
-const {setOutput} = require('./utils/output')
+import {getInput, hasAssertConfig} from './config'
+import {uploadArtifacts} from './utils/artifacts'
+import {setAnnotations} from './utils/annotations'
+import {setOutput} from './utils/output'
 
 /**
  * Audit urls with Lighthouse CI in 3 stages:
