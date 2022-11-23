@@ -64,6 +64,135 @@ function doLogic(inputStr) {
 
 /***/ }),
 
+/***/ 873:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.lightHouseMain = void 0;
+__nccwpck_require__(87); // add automatic support for LH Plugins env
+const core = __nccwpck_require__(186);
+const { join } = __nccwpck_require__(17);
+const childProcess = __nccwpck_require__(81);
+const lhciCliPath = __nccwpck_require__.ab + "cli.js";
+const { getInput, hasAssertConfig } = __nccwpck_require__(893);
+const { uploadArtifacts } = __nccwpck_require__(809);
+const { setAnnotations } = __nccwpck_require__(150);
+const { setOutput } = __nccwpck_require__(348);
+/**
+ * Audit urls with Lighthouse CI in 3 stages:
+ * 1. collect (using lhci collect or the custom PSI runner, store results as artifacts)
+ * 2. assert (assert results using budgets or LHCI assertions)
+ * 3. upload (upload results to LHCI Server, Temporary Public Storage)
+ */
+function lightHouseMain() {
+    return __awaiter(this, void 0, void 0, function* () {
+        core.startGroup('Action config');
+        const resultsPath = __nccwpck_require__.ab + ".lighthouseci";
+        const input = getInput();
+        core.info(`Input args: ${JSON.stringify(input, null, '  ')}`);
+        core.endGroup(); // Action config
+        /******************************* 1. COLLECT ***********************************/
+        core.startGroup(`Collecting`);
+        const collectArgs = [`--numberOfRuns=${input.runs}`];
+        if (input.staticDistDir) {
+            collectArgs.push(`--static-dist-dir=${input.staticDistDir}`);
+        }
+        else if (input.urls) {
+            for (const url of input.urls) {
+                collectArgs.push(`--url=${url}`);
+            }
+        }
+        // else LHCI will panic with a non-zero exit code...
+        if (input.configPath)
+            collectArgs.push(`--config=${input.configPath}`);
+        // @ts-ignore
+        const collectStatus = runChildCommand('collect', collectArgs);
+        if (collectStatus !== 0)
+            throw new Error(`LHCI 'collect' has encountered a problem.`);
+        core.endGroup(); // Collecting
+        /******************************* 2. ASSERT ************************************/
+        if (input.budgetPath || hasAssertConfig(input.configPath)) {
+            core.startGroup(`Asserting`);
+            const assertArgs = [];
+            if (input.budgetPath) {
+                assertArgs.push(`--budgetsFile=${input.budgetPath}`);
+            }
+            else {
+                assertArgs.push(`--config=${input.configPath}`);
+            }
+            // run lhci with problem matcher
+            // https://github.com/actions/toolkit/blob/master/docs/commands.md#problem-matchers
+            // @ts-ignore
+            runChildCommand('assert', assertArgs);
+            core.endGroup(); // Asserting
+        }
+        /******************************* 3. UPLOAD ************************************/
+        core.startGroup(`Uploading`);
+        if (input.serverToken || input.temporaryPublicStorage || input.uploadArtifacts) {
+            // upload artifacts as soon as collected
+            if (input.uploadArtifacts) {
+                yield uploadArtifacts(__nccwpck_require__.ab + ".lighthouseci", input.artifactName);
+            }
+            if (input.serverToken || input.temporaryPublicStorage) {
+                const uploadParams = [];
+                if (input.serverToken) {
+                    uploadParams.push('--target=lhci', `--serverBaseUrl=${input.serverBaseUrl}`, `--token=${input.serverToken}`, '--ignoreDuplicateBuildFailure' // ignore failure on the same commit rerun
+                    );
+                }
+                else if (input.temporaryPublicStorage) {
+                    uploadParams.push('--target=temporary-public-storage');
+                }
+                if (input.basicAuthPassword) {
+                    uploadParams.push(`--basicAuth.username=${input.basicAuthUsername}`, `--basicAuth.password=${input.basicAuthPassword}`);
+                }
+                if (input.configPath)
+                    uploadParams.push(`--config=${input.configPath}`);
+                // @ts-ignore
+                const uploadStatus = runChildCommand('upload', uploadParams);
+                if (uploadStatus !== 0)
+                    throw new Error(`LHCI 'upload' failed to upload to LHCI server.`);
+            }
+        }
+        // run again for filesystem target
+        // @ts-ignore
+        const uploadStatus = runChildCommand('upload', ['--target=filesystem', `--outputDir=${resultsPath}`]);
+        if (uploadStatus !== 0)
+            throw new Error(`LHCI 'upload' failed to upload to fylesystem.`);
+        core.endGroup(); // Uploading
+        yield setOutput(__nccwpck_require__.ab + ".lighthouseci");
+        yield setAnnotations(__nccwpck_require__.ab + ".lighthouseci"); // set failing error/warning annotations
+    });
+}
+exports.lightHouseMain = lightHouseMain;
+/**
+ * Run a child command synchronously.
+ *
+ * @param {'collect'|'assert'|'upload'} command
+ * @param {string[]} [args]
+ * @return {number}
+ */
+function runChildCommand(command, args = []) {
+    const combinedArgs = [__nccwpck_require__.ab + "cli.js", command, ...args];
+    const { status = -1 } = childProcess.spawnSync(process.argv[0], combinedArgs, {
+        stdio: 'inherit',
+    });
+    return status || 0;
+}
+
+
+/***/ }),
+
 /***/ 460:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -167,9 +296,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const time_1 = __nccwpck_require__(460);
 const labels_1 = __nccwpck_require__(602);
+const lighthouse_1 = __nccwpck_require__(873);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            yield (0, lighthouse_1.lightHouseMain)();
             if (core.getInput('format') !== '') {
                 yield (0, time_1.time)();
             }
@@ -2889,11 +3020,59 @@ exports["default"] = _default;
 
 /***/ }),
 
+/***/ 893:
+/***/ ((module) => {
+
+module.exports = eval("require")("../config");
+
+
+/***/ }),
+
+/***/ 150:
+/***/ ((module) => {
+
+module.exports = eval("require")("../utils/annotations");
+
+
+/***/ }),
+
+/***/ 809:
+/***/ ((module) => {
+
+module.exports = eval("require")("../utils/artifacts");
+
+
+/***/ }),
+
+/***/ 348:
+/***/ ((module) => {
+
+module.exports = eval("require")("../utils/output");
+
+
+/***/ }),
+
+/***/ 87:
+/***/ ((module) => {
+
+module.exports = eval("require")("../utils/support-lh-plugins");
+
+
+/***/ }),
+
 /***/ 491:
 /***/ ((module) => {
 
 "use strict";
 module.exports = require("assert");
+
+/***/ }),
+
+/***/ 81:
+/***/ ((module) => {
+
+"use strict";
+module.exports = require("child_process");
 
 /***/ }),
 

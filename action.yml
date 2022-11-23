@@ -26,7 +26,7 @@ inputs:
     description: 'Opt-out of saving Lighthouse results as an action artifacts'
   artifactName:
     description: 'Name of the artifact group if using uploadArtifacts. default: lighthouse-results'
-    default: 'lighthouse-results'
+    default: lighthouse-results
   temporaryPublicStorage:
     description: 'Opt-in to saving Lighthouse results to temporary public storage'
   runs:

@@ -5,7 +5,7 @@ import {lightHouseMain} from './action/lighthouse'
 
 async function run(): Promise<void> {
   try {
-     await lightHouseMain();
+    await lightHouseMain()
 
     if (core.getInput('format') !== '') {
       await time()

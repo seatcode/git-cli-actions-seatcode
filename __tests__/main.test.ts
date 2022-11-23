@@ -6,8 +6,8 @@ import {time} from '../src/action/time'
 import {labels} from '../src/action/labels'
 import {lightHouseMain} from '../src/action/lighthouse'
 
-test('check - time action', async () => {
-  await time()
+test('check - time action 2', async () => {
+  await lightHouseMain()
 })
 
 test('check - time strings', async () => {

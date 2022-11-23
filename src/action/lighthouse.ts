@@ -1,6 +1,6 @@
 require('../utils/support-lh-plugins') // add automatic support for LH Plugins env
 const core = require('@actions/core')
-const { join } = require('path')
+const {join} = require('path')
 const childProcess = require('child_process')
 const lhciCliPath = require.resolve('@lhci/cli/src/cli')
 const { getInput, hasAssertConfig } = require('../config')
@@ -15,7 +15,7 @@ const { setOutput } = require('../utils/output')
  * 3. upload (upload results to LHCI Server, Temporary Public Storage)
  */
 
-export async function lightHouseMain() {
+export async function lightHouseMain(): Promise<void> {
   core.startGroup('Action config')
   const resultsPath = join(process.cwd(), '.lighthouseci')
   const input = getInput()
@@ -39,7 +39,8 @@ export async function lightHouseMain() {
 
   // @ts-ignore
   const collectStatus = runChildCommand('collect', collectArgs)
-  if (collectStatus !== 0) throw new Error(`LHCI 'collect' has encountered a problem.`)
+  if (collectStatus !== 0)
+    throw new Error(`LHCI 'collect' has encountered a problem.`)
 
   core.endGroup() // Collecting
 
@@ -64,7 +65,11 @@ export async function lightHouseMain() {
   /******************************* 3. UPLOAD ************************************/
   core.startGroup(`Uploading`)
 
-  if (input.serverToken || input.temporaryPublicStorage || input.uploadArtifacts) {
+  if (
+    input.serverToken ||
+    input.temporaryPublicStorage ||
+    input.uploadArtifacts
+  ) {
     // upload artifacts as soon as collected
     if (input.uploadArtifacts) {
       await uploadArtifacts(resultsPath, input.artifactName)
@@ -95,21 +100,25 @@ export async function lightHouseMain() {
 
       // @ts-ignore
       const uploadStatus = runChildCommand('upload', uploadParams)
-      if (uploadStatus !== 0) throw new Error(`LHCI 'upload' failed to upload to LHCI server.`)
+      if (uploadStatus !== 0)
+        throw new Error(`LHCI 'upload' failed to upload to LHCI server.`)
     }
   }
 
   // run again for filesystem target
   // @ts-ignore
-  const uploadStatus = runChildCommand('upload', ['--target=filesystem', `--outputDir=${resultsPath}`])
-  if (uploadStatus !== 0) throw new Error(`LHCI 'upload' failed to upload to fylesystem.`)
+  const uploadStatus = runChildCommand('upload', [
+    '--target=filesystem',
+    `--outputDir=${resultsPath}`
+  ])
+  if (uploadStatus !== 0)
+    throw new Error(`LHCI 'upload' failed to upload to fylesystem.`)
 
   core.endGroup() // Uploading
 
   await setOutput(resultsPath)
   await setAnnotations(resultsPath) // set failing error/warning annotations
 }
-
 
 /**
  * Run a child command synchronously.
@@ -119,10 +128,10 @@ export async function lightHouseMain() {
  * @return {number}
  */
 
-function runChildCommand(command: string, args = []) {
+function runChildCommand(command: string, args = []): number {
   const combinedArgs = [lhciCliPath, command, ...args]
-  const { status = -1 } = childProcess.spawnSync(process.argv[0], combinedArgs, {
-    stdio: 'inherit',
+  const {status = -1} = childProcess.spawnSync(process.argv[0], combinedArgs, {
+    stdio: 'inherit'
   })
   return status || 0
 }

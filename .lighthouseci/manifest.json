@@ -1,0 +1,15 @@
+[
+  {
+    "url": "https://example.com/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/Users/juan/Desktop/DEV/INFRA/git-cli-actions-seatcode/.lighthouseci/example_com-_-2022_11_23_22_09_43.report.html",
+    "jsonPath": "/Users/juan/Desktop/DEV/INFRA/git-cli-actions-seatcode/.lighthouseci/example_com-_-2022_11_23_22_09_43.report.json",
+    "summary": {
+      "performance": 1,
+      "accessibility": 0.92,
+      "best-practices": 1,
+      "seo": 0.91,
+      "pwa": 0.3
+    }
+  }
+]
