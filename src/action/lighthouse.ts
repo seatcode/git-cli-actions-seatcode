@@ -1,3 +1,4 @@
+require('./utils/support-lh-plugins')
 import * as core from '@actions/core'
 
 import {join} from 'path'
