@@ -27,6 +27,8 @@ inputs:
   artifactName:
     description: 'Name of the artifact group if using uploadArtifacts. default: lighthouse-results'
     default: 'lighthouse-results'
+  temporaryPublicStorage:
+    description: 'Opt-in to saving Lighthouse results to temporary public storage'
   runs:
     description: 'Number of runs to do per URL'
   serverBaseUrl:
