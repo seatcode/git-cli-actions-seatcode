@@ -37,7 +37,8 @@
     "dayjs": "^1.8.23"
   },
   "devDependencies": {
-    "@types/is-windows": "^1.0.0",
+    "@types/yargs": "^12.0.8",
+    "@types/yargs-parser": "^11.0.0",
     "@types/lodash": "^4.14.188",
     "@types/node": "^18.11.0",
     "@typescript-eslint/parser": "^5.44.0",

@@ -54,7 +54,9 @@ function getInput() {
     let urls = null;
     let numberOfRuns = null;
     // Inspect lighthouserc file for malformations
-    const configPath = core.getInput('configPath') ? (0, path_1.resolve)(core.getInput('configPath')) : null;
+    const configPath = core.getInput('configPath')
+        ? (0, path_1.resolve)(core.getInput('configPath'))
+        : null;
     if (configPath) {
         const rcFileObj = (0, lighthouserc_1.loadRcFile)(configPath);
         if (!rcFileObj.ci) {
@@ -86,7 +88,9 @@ function getInput() {
     return {
         // collect
         urls,
-        runs: core.getInput('runs') ? parseInt(core.getInput('runs'), 10) : numberOfRuns || 1,
+        runs: core.getInput('runs')
+            ? parseInt(core.getInput('runs'), 10)
+            : numberOfRuns || 1,
         staticDistDir,
         // assert
         budgetPath: core.getInput('budgetPath') || '',
@@ -98,7 +102,7 @@ function getInput() {
         uploadArtifacts: core.getInput('uploadArtifacts') === 'true' ? true : false,
         basicAuthUsername: core.getInput('basicAuthUsername') || 'lighthouse',
         basicAuthPassword: core.getInput('basicAuthPassword'),
-        artifactName: core.getInput('artifactName'),
+        artifactName: core.getInput('artifactName')
     };
 }
 exports.getInput = getInput;
@@ -123,7 +127,7 @@ function getList(arg, separator = '\n') {
     const input = core.getInput(arg);
     if (!input)
         return [];
-    return input.split(separator).map((url) => url.trim());
+    return input.split(separator).map(url => url.trim());
 }
 /**
  * Takes a set of URL strings and interpolates
@@ -135,7 +139,7 @@ function interpolateProcessIntoUrls(urls) {
     return urls.map((url) => {
         if (!url.includes('$'))
             return url;
-        Object.keys(process.env).forEach((key) => {
+        Object.keys(process.env).forEach(key => {
             if (url.includes(`${key}`)) {
                 url = url.replace(`$${key}`, `${process.env[key]}`);
             }
@@ -491,12 +495,12 @@ function setAnnotations(resultsPath) {
         const assertionResults = yield (0, lhci_helpers_1.getAssertionResults)(resultsPath);
         if (!assertionResults)
             return;
-        const assertionResultsByUrl = (0, lodash_1.mapValues)((0, lodash_1.groupBy)(assertionResults, 'url'), (assertions) => {
-            return (0, lodash_1.orderBy)(assertions, (a) => (a.level === 'error' ? 0 : 1) + a.auditId);
+        const assertionResultsByUrl = (0, lodash_1.mapValues)((0, lodash_1.groupBy)(assertionResults, 'url'), assertions => {
+            return (0, lodash_1.orderBy)(assertions, a => (a.level === 'error' ? 0 : 1) + a.auditId);
         });
         Object.entries(assertionResultsByUrl).forEach(([url, assertions]) => {
             const link = (links || {})[url];
-            const assertionsText = assertions.map((a) => {
+            const assertionsText = assertions.map(a => {
                 const emoji = a.level === 'error' ? '❌' : '⚠️';
                 return (`${emoji} \`${a.auditId}${a.auditProperty ? '.' + a.auditProperty : ''}\` ` +
                     `${a.level === 'error' ? 'failure' : 'warning'} for \`${a.name}\` assertion` +
@@ -506,7 +510,7 @@ function setAnnotations(resultsPath) {
             const text = `${assertions.length} result${assertions.length === 1 ? '' : 's'} for ${url}\n` +
                 `${link ? `Report: ${link}\n` : ''}\n` +
                 assertionsText.join('\n\n');
-            const hasFailed = assertions.some((a) => a.level === 'error');
+            const hasFailed = assertions.some(a => a.level === 'error');
             if (hasFailed) {
                 core.setFailed(text);
             }
@@ -549,8 +553,10 @@ function uploadArtifacts(resultsPath, artifactName = 'lighthouse-results') {
         const artifactClient = artifact_1.default.create();
         const fileNames = yield promises_1.default.readdir(resultsPath);
         if (typeof resultsPath === 'string') {
-            const files = fileNames.map((fileName) => (0, path_1.join)(resultsPath, fileName));
-            return artifactClient.uploadArtifact(artifactName, files, resultsPath, { continueOnError: true });
+            const files = fileNames.map(fileName => (0, path_1.join)(resultsPath, fileName));
+            return artifactClient.uploadArtifact(artifactName, files, resultsPath, {
+                continueOnError: true
+            });
         }
     });
 }
@@ -596,7 +602,7 @@ function getLinks(resultsPath) {
         const linksPath = (0, path_1.join)(resultsPath, 'links.json');
         if (!(0, fs_1.existsSync)(linksPath))
             return null;
-        return /** @type {Object<string,string>} */ (JSON.parse(yield promises_1.default.readFile(linksPath, 'utf8')));
+        return /** @type {Object<string,string>} */ JSON.parse(yield promises_1.default.readFile(linksPath, 'utf8'));
     });
 }
 exports.getLinks = getLinks;
@@ -610,7 +616,7 @@ function getAssertionResults(resultsPath) {
         const assertionResultsPath = (0, path_1.join)(resultsPath, 'assertion-results.json');
         if (!(0, fs_1.existsSync)(assertionResultsPath))
             return null;
-        return /** @type {LHCIAssertion[]} **/ (JSON.parse(yield promises_1.default.readFile(assertionResultsPath, 'utf8')));
+        return /** @type {LHCIAssertion[]} **/ JSON.parse(yield promises_1.default.readFile(assertionResultsPath, 'utf8'));
     });
 }
 exports.getAssertionResults = getAssertionResults;
@@ -624,7 +630,7 @@ function getManifest(resultsPath) {
         const manifestPath = (0, path_1.join)(resultsPath, 'manifest.json');
         if (!(0, fs_1.existsSync)(manifestPath))
             return null;
-        return /** @type {LHCIManifest[]} **/ (JSON.parse(yield promises_1.default.readFile(manifestPath, 'utf8')));
+        return /** @type {LHCIManifest[]} **/ JSON.parse(yield promises_1.default.readFile(manifestPath, 'utf8'));
     });
 }
 exports.getManifest = getManifest;
