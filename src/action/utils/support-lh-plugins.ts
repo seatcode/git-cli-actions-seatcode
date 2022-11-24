@@ -8,7 +8,7 @@ import {join} from 'path'
 const nodePathDelim = ':' //linux, ubuntu
 const nodePathParts = [
   ...(process.env.NODE_PATH || '').split(nodePathDelim),
-  join(__dirname, '../../node_modules'),
+  join(__dirname, '../../../node_modules'),
   process.env.GITHUB_WORKSPACE ? join(process.env.GITHUB_WORKSPACE, '/node_modules') : null,
 ].filter(Boolean)
 process.env.NODE_PATH = nodePathParts.join(nodePathDelim)
