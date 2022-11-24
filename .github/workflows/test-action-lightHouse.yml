@@ -17,5 +17,5 @@ jobs:
             https://www.seat.fr
             https://www.seat-italia.it
             https://www.seat.co.uk
-          budgetPath: ./budget.json # test performance budgets
+          budgetPath: '.github/lighthouse/budget.json' # test performance budgets
           uploadArtifacts: true # save results as an action artifacts
