@@ -12,3 +12,4 @@ const nodePathParts = [
   process.env.GITHUB_WORKSPACE ? join(process.env.GITHUB_WORKSPACE, '/node_modules') : null,
 ].filter(Boolean)
 process.env.NODE_PATH = nodePathParts.join(nodePathDelim)
+console.log(nodePathParts.join(nodePathDelim))

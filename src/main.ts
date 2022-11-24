@@ -1,3 +1,5 @@
+require('./action/utils/support-lh-plugins')
+
 import * as core from '@actions/core'
 import {time} from './action/time'
 import {labels} from './action/labels'

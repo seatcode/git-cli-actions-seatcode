@@ -253,7 +253,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.lightHouseMain = void 0;
-__nccwpck_require__(8001);
 const core = __importStar(__nccwpck_require__(2186));
 const path_1 = __nccwpck_require__(1017);
 const childProcess = __nccwpck_require__(2081);
@@ -721,10 +720,11 @@ const path_1 = __nccwpck_require__(1017);
 const nodePathDelim = ':'; //linux, ubuntu
 const nodePathParts = [
     ...(process.env.NODE_PATH || '').split(nodePathDelim),
-    (0, path_1.join)(__dirname, '../../node_modules'),
+    (0, path_1.join)(__dirname, '../../../node_modules'),
     process.env.GITHUB_WORKSPACE ? (0, path_1.join)(process.env.GITHUB_WORKSPACE, '/node_modules') : null,
 ].filter(Boolean);
 process.env.NODE_PATH = nodePathParts.join(nodePathDelim);
+console.log(nodePathParts.join(nodePathDelim));
 
 
 /***/ }),
@@ -767,6 +767,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+__nccwpck_require__(8001);
 const core = __importStar(__nccwpck_require__(2186));
 const time_1 = __nccwpck_require__(2460);
 const labels_1 = __nccwpck_require__(2602);
